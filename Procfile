@@ -1,1 +1,1 @@
-web: gunicorn -w 3 application:app 
+web: waitress-serve --port=8000 application:app 
