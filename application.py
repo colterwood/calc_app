@@ -4,10 +4,11 @@ from flask_restful import Resource, Api
 app = Flask(__name__)
 api = Api(app)
 
-# Deine Calculator function
+# Define Calculator function
 class Calculator(Resource):
-    def get(self, operation):
+    def get(self):
         try:
+            operation = request.args.get("operation")
             num1 = float(request.args.get("num1"))
             num2 = float(request.args.get("num2"))
 
@@ -29,8 +30,12 @@ class Calculator(Resource):
             return {"error": "Invalid input. Provide valid numbers."}, 400
 
 
+
 # Define routes
-api.add_resource(Calculator, "/calc/<string:operation>")
+api.add_resource(Calculator, "/calc", endpoint="calc")
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=8000)
+
